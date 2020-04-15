@@ -38,19 +38,21 @@ void StudentList::insert(Student s) {
 		/*		f/         p/e  c
 				1	2 (5) 6 7
 		*/
-		while (newnode->item.get_ID() > current->item.get_ID() && current != NULL)
+		while (newnode->item.get_ID() > current->item.get_ID()&&current!=end)
 		{
-			pre = current; 
+			pre = pre->next;
 			current = current->next;
-			
 		}
-		if(current==NULL)
+		if(current==end)
 		{
-			end->next = newnode;
-			newnode->next = NULL;
+			//changed this condition
+			pre = current;
+			current = current->next;
+			pre->next = newnode;
 			end = newnode;
+			newnode->next=NULL;
 		}
-		else {
+		if(current!=NULL) {
 			pre->next = newnode;
 			newnode->next = current;
 		}
@@ -59,26 +61,43 @@ void StudentList::insert(Student s) {
 	length++;
 }
 void StudentList::Delete(int id) {
+	Node* pre = front;
+	Node* current = pre->next;
+	bool Found = false;
 	if (length == 0)
 		cout << "empty List" << endl;
+	//changed this part ..to check if it's just one element
+	 else if(length == 1&& pre->item.get_ID() == id) {
+		front = end = NULL;
+		length = 0;
+		Found = true;
+	}
+	//to check first element and delete it 
+	 else if (pre->item.get_ID()==id) {
+		front = front->next;
+		delete pre;
+		Found = true;
+		length--;
+	}
+	//
 	else {
-		bool Found = false;
-		Node* pre = front;
-		Node* current = pre->next;
 		while (current != NULL) {
 			if (current->item.get_ID() == id) {
 				pre->next = current->next;
 				delete current;
 				Found = true;
+				length--;
 				break;
 			}
 			pre = pre->next;
 			current = current->next;
 		}
-		if (Found == false)
-			cout << "this Student is not found" << endl;
 	}
+	if (Found == false)
+		cout << "this Student is not found" << endl;
+	
 }
+
 void StudentList::Display() {
 	if (length == 0)
 		cout << "empty List" << endl;
@@ -86,7 +105,7 @@ void StudentList::Display() {
 		Node* current = front;
 		cout << "[";
 		while (current != NULL) {
-			cout << current->item<<", "<<endl;
+			cout << current->item<<",";
 			current = current->next;
 		}
 		cout << "]" << endl;

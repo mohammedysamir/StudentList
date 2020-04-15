@@ -16,7 +16,7 @@ public:
 	void set_GPA(float n);
 	float get_GPA();
 	friend ostream &operator<<(ostream& out, Student& s) {
-		out << s.Name << " " << s.ID << " " << s.GPA << endl;
+		out << s.Name << "_" << s.ID << "_" << s.GPA;
 		return out;
 	}
 	friend istream& operator>>(istream& in, Student& s) {
